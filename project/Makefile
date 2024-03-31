@@ -8,14 +8,15 @@ all: libsparrow.so p1
 
 # Rule to build the shared library from its object file
 libsparrow.so: sparrow.o
-	$(CC) -shared -o libsparrow.so sparrow.o
+	$(CC) sparrow.o -shared -o libsparrow.so 
 
 # Rule to compile sparrow.cpp into an object file
-sparrow.o: sparrow.cpp
+sparrow.o: sparrow.cpp sparrow.h
 	$(CC) $(CFLAGS) -c sparrow.cpp
 
 # Rule to build the executable by directly compiling p1.cpp and linking with the shared library
-p1: p1.cpp libsparrow.so
+p1: p1.cpp sparrow.h 
+	export LD_LIBRARY_PATH=.
 	$(CC) $(CFLAGS) p1.cpp -o p1 -L. -lsparrow
 
 # Rule to clean up generated files
