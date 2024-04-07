@@ -17,8 +17,8 @@ def run_and_check(cmd):
         raise Exception(f"This program exited with status code {result.returncode}: {cmd}")
 
 def cpp_test(name):
-    compiler = os.environ.get("CC", "g++-13")
-    run_and_check(f"{compiler} -L . -I . -std=c++20 {name}.cpp -lsparrow -o {name}")
+    compiler = os.environ.get("CC", "g++")
+    run_and_check(f"{compiler} -L . -I . -std=c++2a {name}.cpp -lsparrow -o {name}")
     run_and_check(f"./{name}")
     return None
 
