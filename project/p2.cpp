@@ -39,7 +39,7 @@ int main() {
         auto nints12Average = sparrow::Average(&nints12Division.value);
 
         if(nints12Average.ok){
-            std::cout << "The average of the division is: " << nints12Average.value << "\n";
+            std::cout << nints12Average.value << "\n";
         }else {
             std::cout << "Could not compute an average from the divison results." << "\n";
 
