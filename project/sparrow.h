@@ -13,19 +13,26 @@ namespace sparrow {
                                                      std::vector<std::bitset<32>> b);
     }
 
-    struct NullableInts{
+   struct NullableInts {
         std::vector<int> nums;
         std::vector<std::bitset<32>> valid;
     };
 
     void DropZero(NullableInts* nullableInts);
     
-    struct AverageResult {
-        float average;
-        bool valid;
+     struct AverageResult {
+        float value;
+        bool ok;
     };
 
     AverageResult Average(const NullableInts* nullableInts);
+
+    struct DivideResult {
+        NullableInts value;
+        bool ok;
+    };
+
+    DivideResult Divide(const NullableInts* numA, const NullableInts* numB);
 
 }
 

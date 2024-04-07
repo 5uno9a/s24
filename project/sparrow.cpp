@@ -45,37 +45,29 @@ namespace sparrow {
          
     }
 
-    struct NullableInts{
-        std::vector<int> nums;
-        std::vector<std::bitset<32>> valid;
-    };
-
     void DropZero(NullableInts* nullableInts){
+        if(!nullableInts) return;
+
         for(size_t i = 0; i < nullableInts->nums.size(); ++i){
             if(nullableInts->nums[i]== 0){
                 size_t bitsetIndex = i/32;
                 size_t bitIndex = i % 32;
 
                 if(bitsetIndex >= nullableInts->valid.size()){
-                    nullableIntes->valid.resize(bitsetIndex + 1);
+                    nullableInts->valid.resize(bitsetIndex + 1);
                 }
 
-                nullableIntes->valid[bitsetIndex].set(bitIndex, false);
+                nullableInts->valid[bitsetIndex].set(bitIndex, false);
             }
         }
     }
-
-    struct AverageResult{
-        float value;
-        bool ok;
-    };
 
     AverageResult Average (const NullableInts* nullableInts){
         if(nullableInts == nullptr){
             return {0.0f, false};
         }
 
-        float sum 0.0f;
+        float sum = 0.0f;
         size_t count = 0;
 
         for(size_t i = 0; i < nullableInts->nums.size(); ++i){
@@ -86,16 +78,39 @@ namespace sparrow {
         }
         
         if(count == 0){
-            return {0.0f, false}
+            return {0.0f, false};
         }else {
             return {sum / count, true};
         }
     }
 
-    
+    DivideResult Divide (const NullableInts* numA, const NullableInts* numB){
+        // Return for null inputs or size mismatch.
+        if(numA == nullptr || numB == nullptr || numA->nums.size() != numB->nums.size()){
+            return {{}, false};
+        }
 
+        auto [bitwiseAndResult, isValid] = warmup::BitAnd(numA->valid, numB->valid);
 
+        if(!isValid){
+            return {{}, false};
+        }
 
+        NullableInts result;
+        result.nums.resize(numA->nums.size());
+        result.valid = bitwiseAndResult;
 
+        for(size_t i = 0; i < numA->nums.size(); ++i){
+            if(bitwiseAndResult.size() > i / 32 && bitwiseAndResult[i/32].test(i%32)){
+                if(numB->nums[i] != 0){
+                    result.nums[i] = numA->nums[i] / numB-> nums[i];
+                }else{
+                    // Invalidate division by zero
+                    result.valid[i/32].set(i % 32, false);
+                }
+            }
+        }
+        return {result, true};
+    }
 
 }
