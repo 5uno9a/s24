@@ -44,4 +44,58 @@ namespace sparrow {
          }
          
     }
+
+    struct NullableInts{
+        std::vector<int> nums;
+        std::vector<std::bitset<32>> valid;
+    };
+
+    void DropZero(NullableInts* nullableInts){
+        for(size_t i = 0; i < nullableInts->nums.size(); ++i){
+            if(nullableInts->nums[i]== 0){
+                size_t bitsetIndex = i/32;
+                size_t bitIndex = i % 32;
+
+                if(bitsetIndex >= nullableInts->valid.size()){
+                    nullableIntes->valid.resize(bitsetIndex + 1);
+                }
+
+                nullableIntes->valid[bitsetIndex].set(bitIndex, false);
+            }
+        }
+    }
+
+    struct AverageResult{
+        float value;
+        bool ok;
+    };
+
+    AverageResult Average (const NullableInts* nullableInts){
+        if(nullableInts == nullptr){
+            return {0.0f, false};
+        }
+
+        float sum 0.0f;
+        size_t count = 0;
+
+        for(size_t i = 0; i < nullableInts->nums.size(); ++i){
+            if(i/32 < nullableInts->valid.size() && nullableInts-> valid[i/32].test(i%32)){
+                sum += nullableInts->nums[i];
+                ++count;
+            }
+        }
+        
+        if(count == 0){
+            return {0.0f, false}
+        }else {
+            return {sum / count, true};
+        }
+    }
+
+    
+
+
+
+
+
 }

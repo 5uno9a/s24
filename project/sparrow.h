@@ -12,5 +12,21 @@ namespace sparrow {
         std::pair<std::vector<std::bitset<32>>, bool> BitAnd(std::vector<std::bitset<32>> a,
                                                      std::vector<std::bitset<32>> b);
     }
+
+    struct NullableInts{
+        std::vector<int> nums;
+        std::vector<std::bitset<32>> valid;
+    };
+
+    void DropZero(NullableInts* nullableInts);
+    
+    struct AverageResult {
+        float average;
+        bool valid;
+    };
+
+    AverageResult Average(const NullableInts* nullableInts);
+
 }
+
 
